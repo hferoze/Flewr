@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Flewr</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="image_size_flag">c</string>
+
+    <string name="span_count_portrait">2</string>
+    <string name="span_count_landscape">3</string>
+
+</resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#0097A7</color>
+    <color name="colorAccent">#FFEB3B</color>
+    <color name="text_shadow">#041E75</color>
+    <color name="text_color_normal">#ffffff</color>
+
+    <string-array name="colorsmore">
+        <item>#E52E39</item> <!-- red-->
+        <item>#FF6666</item> <!-- light red -->
+
+        <item>#FF6699</item> <!-- pink-->
+        <item>#FF99CC</item> <!--light pink-->
+        <item>#FF33CC</item> <!--dark pink-->
+
+
+        <item>#CC33FF</item> <!--purple-->
+        <item>#FF99FF</item> <!--light_purple-->
+        <item>#CC00CC</item> <!--dark purple-->
+
+
+        <item>#0099FF</item> <!--blue -->
+        <item>#66CCFF</item> <!--light blue-->
+        <item>#6600FF</item> <!-- dark blue-->
+
+
+        <item>#66FFFF</item> <!-- violet -->
+        <item>#CCFFFF</item> <!--light violet -->
+        <item>#6699FF</item> <!-- dark violet-->
+
+
+        <item>#99FF33</item> <!--green-->
+        <item>#CCFF99</item> <!--light green-->
+        <item>#33CC33</item> <!--dark green-->
+
+
+        <item>#FFFF66</item> <!--yellow-->
+        <item>#FFFFCC</item> <!--light yellow-->
+        <item>#FFFF00</item> <!--dark yellow/orange-->
+
+
+        <item>#FFCC66</item> <!--brown-->
+        <item>#FFCC99</item> <!-- light brown-->
+        <item>#FF9900</item> <!-- dark brown -->
+
+        <item>#FFFFFF</item> <!--white-->
+        <item>#E6E6E6</item> <!--light gray -->
+        <item>#BDBDBD</item> <!--dark gray-->
+    </string-array>
+</resources>
