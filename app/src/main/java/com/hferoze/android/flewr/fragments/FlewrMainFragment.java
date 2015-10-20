@@ -78,7 +78,9 @@ public class FlewrMainFragment extends Fragment {
     private Dialog mAlert;
     private boolean mAlertCancelledState = false;
 
-    public boolean mActivityLaunchPost = false;
+    private boolean mActivityLaunchPost = false;
+    
+    private boolean mDbLoadDone = false;
 
     public void FlewrMainFragment() {
     }
@@ -349,7 +351,7 @@ public class FlewrMainFragment extends Fragment {
      */
     private class UpdateDbTask extends AsyncTask<PhotosInfo, Void, String> {
         protected String doInBackground(PhotosInfo...photosInfos) {
-
+            mDbLoadDone = false;
             PhotosInfo.deleteAll(PhotosInfo.class);
             for (int i = 0 ; i < mPhotosInfo.size(); i++) {
                 PhotosInfo photosInfo = mPhotosInfo.get(i);
@@ -360,8 +362,10 @@ public class FlewrMainFragment extends Fragment {
         }
 
         protected void onPostExecute(String result) {
-            if (result.equals("Done"))
+            if (result.equals("Done")){
                 Log.d(TAG, "Update db done");
+                mDbLoadDone = true;
+            }
         }
     }
 
@@ -403,10 +407,14 @@ public class FlewrMainFragment extends Fragment {
     */
     public void refreshView(){
         if (mUtils.isDataAvaialable()){
-            collectPhotoInfoFromFlickr();
-            mAlertCancelledState = false;
-            if (mAlert != null && mAlert.isShowing())
-                mAlert.dismiss();
+            if (mDbLoadDone){
+                collectPhotoInfoFromFlickr();
+                mAlertCancelledState = false;
+                if (mAlert != null && mAlert.isShowing())
+                    mAlert.dismiss();
+            }else{
+                if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
+            }
         }else {
             if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
             if (!mAlertCancelledState) {
