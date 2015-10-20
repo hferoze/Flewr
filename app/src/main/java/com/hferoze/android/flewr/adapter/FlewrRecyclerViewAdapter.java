@@ -85,16 +85,20 @@ public class FlewrRecyclerViewAdapter extends RecyclerView.Adapter<FlewrRecycler
 
         @Override
         public void onClick(View view) {
-            List<PhotosInfo> listAll = PhotosInfo.listAll(PhotosInfo.class);
-
-            //Open Detail Fragment
-            Intent intent = new Intent(mActivity, FlewrDetailActivity.class);
-            intent.putExtra(AppConstants.PHOTO_LINK, listAll.get(getPosition()).getLink());
-            intent.putExtra(AppConstants.OWNER_NAME, listAll.get(getPosition()).getOwner());
-            intent.putExtra(AppConstants.OWNER_THUMB, listAll.get(getPosition()).getOwnerThumbLink());
-            intent.putExtra(AppConstants.PHOTO_TITLE, listAll.get(getPosition()).getTitle());
-            intent.putExtra(AppConstants.VIEWS_COUNT, listAll.get(getPosition()).getViews());
-            mActivity.startActivity(intent);
+            try {
+                List<PhotosInfo> listAll = PhotosInfo.listAll(PhotosInfo.class);
+    
+                //Open Detail Fragment
+                Intent intent = new Intent(mActivity, FlewrDetailActivity.class);
+                intent.putExtra(AppConstants.PHOTO_LINK, listAll.get(getPosition()).getLink());
+                intent.putExtra(AppConstants.OWNER_NAME, listAll.get(getPosition()).getOwner());
+                intent.putExtra(AppConstants.OWNER_THUMB, listAll.get(getPosition()).getOwnerThumbLink());
+                intent.putExtra(AppConstants.PHOTO_TITLE, listAll.get(getPosition()).getTitle());
+                intent.putExtra(AppConstants.VIEWS_COUNT, listAll.get(getPosition()).getViews());
+                mActivity.startActivity(intent);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
 
         }
     }
