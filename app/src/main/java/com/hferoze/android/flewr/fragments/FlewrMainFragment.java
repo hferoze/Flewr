@@ -81,6 +81,7 @@ public class FlewrMainFragment extends Fragment {
     private boolean mActivityLaunchPost = false;
     
     private boolean mDbLoadDone = false;
+    private boolean mInitialLoad = true;
 
     public void FlewrMainFragment() {
     }
@@ -360,6 +361,7 @@ public class FlewrMainFragment extends Fragment {
     private class UpdateDbTask extends AsyncTask<PhotosInfo, Void, String> {
         protected String doInBackground(PhotosInfo...photosInfos) {
             mDbLoadDone = false;
+            mInitialLoad = false;
             PhotosInfo.deleteAll(PhotosInfo.class);
             for (int i = 0 ; i < mPhotosInfo.size(); i++) {
                 PhotosInfo photosInfo = mPhotosInfo.get(i);
@@ -415,7 +417,7 @@ public class FlewrMainFragment extends Fragment {
     */
     public void refreshView(){
         if (mUtils.isDataAvaialable()){
-            if (mDbLoadDone){
+            if (mDbLoadDone || mInitialLoad){
                 collectPhotoInfoFromFlickr();
                 mAlertCancelledState = false;
                 if (mAlert != null && mAlert.isShowing())
