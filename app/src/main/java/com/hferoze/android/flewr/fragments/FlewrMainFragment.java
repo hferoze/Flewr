@@ -224,6 +224,14 @@ public class FlewrMainFragment extends Fragment {
         outState.putBoolean(REQUEST_POSTED_KEY, mActivityLaunchPost);
         outState.putBoolean(ALERT_CANCELLED_KEY, mAlertCancelledState);
     }
+    
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAlert != null && mAlert.isShowing()) {
+            mAlert.dismiss();
+        }
+    }
 
     /*
     * Show Data Unavailable popup based on current data state
