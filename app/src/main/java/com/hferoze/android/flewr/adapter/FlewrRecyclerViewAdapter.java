@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,10 @@ public class FlewrRecyclerViewAdapter extends RecyclerView.Adapter<FlewrRecycler
         holder.ownerNameTextView.setText(mPhotoList.get(position).getOwner());
         holder.viewsCountTextView.setText(mPhotoList.get(position).getViews());
         holder.photoTitleTextView.setText(mPhotoList.get(position).getTitle());
+
+        Log.d("Flewr", "ownerName: " + mPhotoList.get(position).getOwner() + " views: " + mPhotoList.get(position).getViews());
     }
+
     @Override
     public int getItemCount() {
         return this.mPhotoList.size();

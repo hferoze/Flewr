@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -31,6 +32,7 @@ import com.hferoze.android.flewr.R;
 import com.hferoze.android.flewr.adapter.FlewrRecyclerViewAdapter;
 import com.hferoze.android.flewr.obj.PhotosInfo;
 import com.hferoze.android.flewr.pojo.Api;
+import com.hferoze.android.flewr.pojo.Photo;
 import com.hferoze.android.flewr.pojo.PhotosObject;
 import com.hferoze.android.flewr.util.Utils;
 
@@ -178,12 +180,11 @@ public class FlewrMainFragment extends Fragment {
         mStaggeredGridLayoutManager = new StaggeredGridLayoutManager(mSpanCount, StaggeredGridLayoutManager.VERTICAL);
         mStaggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS);
 
-        mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
-
         mFlewrAdapter = new FlewrRecyclerViewAdapter(mContext, getActivity(), mPhotosInfo);
 
         mRecyclerView.setAdapter(mFlewrAdapter);
         mRecyclerView.setLayoutManager(mStaggeredGridLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimaryDark, R.color.colorPrimary, R.color.colorAccent, R.color.colorPrimary);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -318,23 +319,24 @@ public class FlewrMainFragment extends Fragment {
                 Log.d(TAG, "StatusCode: " + statusCode + " Raw " + response.raw());
                 try {
                     // Collect information from API response to create Photo link
-                    for (int i = 0; i < response.body().getPhotos().getPhoto().size(); i++) {
+                    mPhotosInfo.clear();
+                    for (Photo photo : response.body().getPhotos().getPhoto()) {
                         String link = mUtils.getPhotoURL(
-                                response.body().getPhotos().getPhoto().get(i).getFarm(),
-                                response.body().getPhotos().getPhoto().get(i).getServer(),
-                                response.body().getPhotos().getPhoto().get(i).getId(),
-                                response.body().getPhotos().getPhoto().get(i).getSecret(),
+                                photo.getFarm(),
+                                photo.getServer(),
+                                photo.getId(),
+                                photo.getSecret(),
                                 mContext.getString(R.string.image_size_flag),
                                 PHOTO_EXT);
                         // Collect information from API response to create owner icon link
                         String thumb = mUtils.getThumbnailURL(
-                                response.body().getPhotos().getPhoto().get(i).getOwner(),
+                                photo.getOwner(),
                                 PHOTO_EXT
                         );
 
-                        String ownerName = response.body().getPhotos().getPhoto().get(i).getOwnername(); //Owner name
-                        String title = response.body().getPhotos().getPhoto().get(i).getTitle();        //Photo title
-                        String views = response.body().getPhotos().getPhoto().get(i).getViews();        //Number of views
+                        String ownerName = photo.getOwnername(); //Owner name
+                        String title = photo.getTitle();        //Photo title
+                        String views = photo.getViews();        //Number of views
                         mPhotosInfo.add( new PhotosInfo(link, thumb, ownerName, title, views));
                     }
 
@@ -342,8 +344,7 @@ public class FlewrMainFragment extends Fragment {
                     new UpdateDbTask().execute();
                     if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
                     mFlewrAdapter.notifyDataSetChanged();
-
-                }catch (Exception e){
+                   }catch (Exception e){
                     e.printStackTrace();
                 }
             }
@@ -363,11 +364,9 @@ public class FlewrMainFragment extends Fragment {
             mDbLoadDone = false;
             mInitialLoad = false;
             PhotosInfo.deleteAll(PhotosInfo.class);
-            for (int i = 0 ; i < mPhotosInfo.size(); i++) {
-                PhotosInfo photosInfo = mPhotosInfo.get(i);
-                photosInfo.save();
+            for (PhotosInfo photoInfo : mPhotosInfo) {
+                photoInfo.save();
             }
-
             return "Done";
         }
 
